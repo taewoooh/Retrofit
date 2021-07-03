@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Retrofit</string>
+    <string name="baseUrl">http://re-build.tistory.com</string>
+</resources>
