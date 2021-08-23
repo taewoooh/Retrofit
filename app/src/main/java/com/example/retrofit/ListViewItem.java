@@ -63,6 +63,10 @@ public class ListViewItem implements Comparable<ListViewItem> {
     @Expose
     String gunchukyear;
 
+    @SerializedName("today")
+    @Expose
+    String today;
+
 
     @SerializedName("hightprice")
     @Expose
@@ -223,9 +227,15 @@ public class ListViewItem implements Comparable<ListViewItem> {
         this.arin = arin;
         this.you = you;
     }
-
-    public ListViewItem(String name, String price, String area, String year, String month, String day, String high, String doromyung, String jibun, String geunmulcode, String jiyeokcode, String bupjungdong, String gunchukyear, String areac, String ymd) {
-
+    public ListViewItem(String name, String price,
+                        String area, String year,
+                        String month, String day,
+                        String high, String doromyung,
+                        String jibun, String geunmulcode,
+                        String jiyeokcode,
+                        String bupjungdong,
+                        String gunchukyear,
+                        String today) {
         this.name = name;
         this.price = price;
         this.area = area;
@@ -239,12 +249,10 @@ public class ListViewItem implements Comparable<ListViewItem> {
         this.jiyeokcode = jiyeokcode;
         this.bupjungdong = bupjungdong;
         this.gunchukyear = gunchukyear;
-
-        this.areac = areac;
-        this.ymd = ymd;
-
+        this.today = today;
 
     }
+
 
 
     public String getPyungmyuendo() {
@@ -582,84 +590,9 @@ public class ListViewItem implements Comparable<ListViewItem> {
     @Override
     public int compareTo(ListViewItem entry) { //금액 낮은순
 
-        if (new TWPreference().getInt("value", 0) % 2 == 0) {  //짝수
-            return entry.getPrice().compareTo(this.getPrice());
-        } else {  //홀수
-            int a = 0;
-            int b = 0;
 
+        return entry.getPrice().compareTo(this.getPrice());
 
-            if ("".equals(this.getChaik())) { //만약 받아온 데이터가 공백이 아니면 데이터를 형변환 하여 적재
-
-                a = 0;
-
-            } else {
-                a = Integer.parseInt(this.getChaik());
-
-            }
-            if ("".equals(entry.getChaik())) {
-
-                b = 0;
-            } else {
-
-
-                b = Integer.parseInt(entry.getChaik());
-
-            }
-
-
-            if (a < b)
-
-            {
-                return 1;
-
-            } else if (a == b)
-
-            {
-                return 0;
-            }
-
-        }
-
-//        if (new TWPreference().getInt("value",0)==0) {
-//            return entry.getPrice().compareTo(this.getPrice());
-//        } else if (new TWPreference().getInt("value",0)==1) {
-//            int a = 0;
-//            int b = 0;
-//
-//
-//            if ("".equals(this.getChaik())) { //만약 받아온 데이터가 공백이 아니면 데이터를 형변환 하여 적재
-//
-//                a = 0;
-//
-//            } else {
-//                a = Integer.parseInt(this.getChaik());
-//
-//            }
-//            if ("".equals(entry.getChaik())) {
-//
-//                b = 0;
-//            } else {
-//
-//
-//                b = Integer.parseInt(entry.getChaik());
-//
-//            }
-//
-//
-//            if (a < b)
-//
-//            {
-//                return 1;
-//
-//            } else if (a == b)
-//
-//            {
-//                return 0;
-//            }
-
-
-        return -1;
     }
 
 }

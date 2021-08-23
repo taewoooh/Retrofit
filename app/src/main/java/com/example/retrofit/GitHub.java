@@ -10,8 +10,14 @@ import retrofit2.http.Query;
 interface GitHub {
 
 
-    // GET/POST/DELETE/PUT 메소드들을 인터페이스에 구현하여 사용할 수 있다.
-    @GET("/mysqlexport2.php")
+     //GET/POST/DELETE/PUT 메소드들을 인터페이스에 구현하여 사용할 수 있다.
+
+    //@GET("/Information2.php")
+   // @GET("/ilbyeol.php")
+    @GET("/Information.php")
     // JSON Array를 리턴하므로 List<>가 되었다
-    Call<List<ListViewItem>> contributors(@Query("naljja") String naljja);
+    //Call<List<ListViewItem>> contributors(@Query("name") String naljja);
+    Call<List<ListViewItem>> contributors(@Query("name") String name,
+                                          @Query("area") String area,
+                                          @Query("jiyeokcode") String jiyeokcode);
 }

@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,11 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private final String BASE_URL = "https://taewoooh88.cafe24.com/";
     Retrofit retrofit;
-    int i_price = 0;
-    int i_highprice = 0;
-    int count = 0;
-    String areac;
-    String ymd;
+
     ArrayList<ListViewItem> listViewItems;
 
     @Override
@@ -37,25 +36,29 @@ public class MainActivity extends AppCompatActivity {
         listViewItems = new ArrayList<>();
 
 
-        Tongsin("DAY20210101");
+        //Tongsin("DAY20210821");
+        Tongsin("은마","76.79","11680");
 
     }
 
 
     public void init() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         // GSON 컨버터를 사용하는 REST 어댑터 생성
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
-    public void Tongsin(String tablecode) { // 서버 데이터를 가지고 온다 파라미터는 불러올 테이블 이름
+    public void Tongsin(String name,String area, String jiyeokcode) { // 서버 데이터를 가지고 온다 파라미터는 불러올 테이블 이름
 
 
         init();
         GitHub gitHub = retrofit.create(GitHub.class);
-        Call<List<ListViewItem>> call = gitHub.contributors(tablecode);
+        Call<List<ListViewItem>> call = gitHub.contributors(name,area,jiyeokcode);
         call.enqueue(new Callback<List<ListViewItem>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -82,66 +85,52 @@ public class MainActivity extends AppCompatActivity {
                     String jiyeokcode = contributor.jiyeokcode;
                     String bupjungdong = contributor.bupjungdong;
                     String gunchukyear = contributor.gunchukyear;
+                    String today = contributor.today;
 
-                    String hightprice = contributor.hightprice;
-                    String hightyear = contributor.hightyear;
-                    String hightmonth = contributor.hightmonth;
-                    String hightday = contributor.hightday;
-                    String chaik = contributor.chaik;
-
-                    String pyungmyuendo = contributor.pyungmyuendo;
-                    String chongdongsu = contributor.chongdongsu;
-                    String chongsedaesu = contributor.chongsedaesu;
-                    String juchadaesu = contributor.juchadaesu;
-                    String pyungeunjucha = contributor.pyungeunjucha;
-                    String yongjeukryul = contributor.yongjeukryul;
-                    String gunpaeyul = contributor.gunpaeyul;
-                    String ganrisamuso = contributor.ganrisamuso;
-                    String nanbang = contributor.nanbang;
-                    String gunseoulsa = contributor.gunseoulsa;
-                    String jihachul = contributor.jihachul;
-                    String mart = contributor.mart;
-                    String hospital = contributor.hospital;
-                    String park = contributor.park;
-                    String cho = contributor.cho;
-                    String jung = contributor.jung;
-                    String go = contributor.go;
-                    String arin = contributor.arin;
-                    String you = contributor.you;
-
-
-                    Log.e("dhxodn88",""+name+" / "+price+" / "+area);
+//                    String hightprice = contributor.hightprice;
+//                    String hightyear = contributor.hightyear;
+//                    String hightmonth = contributor.hightmonth;
+//                    String hightday = contributor.hightday;
+//                    String chaik = contributor.chaik;
+//
+//                    String pyungmyuendo = contributor.pyungmyuendo;
+//                    String chongdongsu = contributor.chongdongsu;
+//                    String chongsedaesu = contributor.chongsedaesu;
+//                    String juchadaesu = contributor.juchadaesu;
+//                    String pyungeunjucha = contributor.pyungeunjucha;
+//                    String yongjeukryul = contributor.yongjeukryul;
+//                    String gunpaeyul = contributor.gunpaeyul;
+//                    String ganrisamuso = contributor.ganrisamuso;
+//                    String nanbang = contributor.nanbang;
+//                    String gunseoulsa = contributor.gunseoulsa;
+//                    String jihachul = contributor.jihachul;
+//                    String mart = contributor.mart;
+//                    String hospital = contributor.hospital;
+//                    String park = contributor.park;
+//                    String cho = contributor.cho;
+//                    String jung = contributor.jung;
+//                    String go = contributor.go;
+//                    String arin = contributor.arin;
+//                    String you = contributor.you;
 
 
-
-
+                    Log.e("dhxodn88",""+name+" / "+price+" / "+area+" / "+year+"."+month+"."+day+" / "+high+" / "+doromyung+" / "+jibun+" / " +
+                            " / "+geunmulcode+" / "+jiyeokcode+" / "+bupjungdong+" / "+gunchukyear +" / "+today);
 
 
 
 
-                    try { // 신고가 카운트 하기
-                        i_price = Integer.parseInt(price.replaceAll(",", "").replaceAll("\\p{Z}", ""));
-                        i_highprice = Integer.parseInt(hightprice.replaceAll(",", "").replaceAll("\\p{Z}", ""));
 
 
-                        if (i_price > i_highprice) {
-                            count++;
-                            //Log.d("dhxodn1988", "" + i_price + "  /  " + i_highprice+ "  /  " +count);
-                        }
-                    } catch (Exception e) {
-                    }
 
 
-                    areac = new Util().AreaChange(area);   // 평형 바꾸기
-                    ymd = new Util().Ymd(year, month, day); // 년월일
+
+
                     month = month.replace(",", "");
-                    // Log.d("dhxodn1988", "" + ymd);
 
                     listViewItems.add(new ListViewItem(name, price, area, year, month, day,
                             high, doromyung, jibun, geunmulcode,
-                            jiyeokcode, bupjungdong, gunchukyear, hightprice,
-                            hightyear, hightmonth, hightday, areac, ymd, chaik, pyungmyuendo, chongdongsu, chongsedaesu, juchadaesu, pyungeunjucha,
-                            yongjeukryul, gunpaeyul, ganrisamuso, nanbang, gunseoulsa, jihachul, mart, hospital, park, cho, jung, go, arin, you));
+                            jiyeokcode, bupjungdong, gunchukyear, today));
                     Collections.sort(listViewItems);
 
 
